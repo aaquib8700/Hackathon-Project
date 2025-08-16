@@ -59,7 +59,7 @@ export default function App() {
               className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
               onClick={() => setStep("landing")}
             >
-              Go Back
+              Back
             </button>
             <button
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
@@ -79,7 +79,7 @@ export default function App() {
               className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
               onClick={() => setStep("wallet")}
             >
-              Go Back
+              Back
             </button>
           </div>
           <SolanaWallet mnemonic={mnemonic} showBalance />
