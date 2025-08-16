@@ -3,15 +3,17 @@ import { mnemonicToSeed } from "bip39";
 import { derivePath } from "ed25519-hd-key";
 import { Keypair } from "@solana/web3.js";
 import nacl from "tweetnacl";
+import bs58 from "bs58";
 
 export function SolanaWallet({ mnemonic, showBalance }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [wallets, setWallets] = useState([]);
   const [searchAddress, setSearchAddress] = useState("");
   const [walletBalance, setWalletBalance] = useState(null);
+  const [privatekey, setprivatekey] = useState([])
 
   const fetchBalance = async (publicKey) => {
-    const response = await fetch("https://api.devnet.solana.com", {
+    const response = await fetch("https://solana-mainnet.g.alchemy.com/v2/2UT-VpKMOTi3x725BAVQM", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -30,9 +32,12 @@ export function SolanaWallet({ mnemonic, showBalance }) {
     const path = `m/44'/501'/${currentIndex}'/0'`;
     const derivedSeed = derivePath(path, seed.toString("hex")).key;
     const secret = nacl.sign.keyPair.fromSeed(derivedSeed).secretKey;
+    console.log("Privatekey",bs58.encode(secret));
+    
     const keypair = Keypair.fromSecretKey(secret);
-    setCurrentIndex(currentIndex + 1);
+    setCurrentIndex((prev)=>prev + 1);
     setWallets([...wallets, keypair.publicKey.toBase58()]);
+    setprivatekey([...privatekey,secret])
   };
 
   return (
@@ -51,6 +56,14 @@ export function SolanaWallet({ mnemonic, showBalance }) {
               className="mt-2 p-2 bg-gray-100 rounded-md text-sm break-words"
             >
               Wallet {i + 1}: {w}
+            </div>
+          ))}
+          {privatekey.map((w, i) => (
+            <div
+              key={i}
+              className="mt-2 p-2 bg-gray-100 rounded-md text-sm break-words"
+            >
+              Private Key {i + 1}: {bs58.encode(w)}
             </div>
           ))}
         </div>
