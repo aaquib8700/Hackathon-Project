@@ -33,7 +33,15 @@ export default function App() {
         <div className="bg-white shadow-lg rounded-2xl p-6 w-full max-w-md text-center">
           <h2 className="text-xl font-semibold mb-3">Your Recovery Phrase</h2>
           <p className="bg-gray-100 border rounded-xl p-4 text-sm text-gray-700 mb-4">
-            {mnemonic}
+            {mnemonic.split(" ").map((word, idx) => (
+              <div
+                key={idx}
+                className="flex items-center mb-2 px-2 py-1 bg-white rounded border"
+              >
+                <span className="text-gray-500 text-sm">{idx + 1}.</span>
+                <span className="font-medium">{word}</span>
+              </div>
+            ))}
           </p>
           <div className="flex justify-center gap-4">
             <button
@@ -51,7 +59,7 @@ export default function App() {
           </div>
         </div>
       )}
-
+      
       {step === "wallet" && (
         <div className="bg-white shadow-lg rounded-2xl p-6 w-full max-w-lg text-center">
           <div className="flex justify-between mb-4">
